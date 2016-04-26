@@ -1,4 +1,4 @@
-var app = angular.module('AngularGoogleMap', ['google-maps']);
+var app = angular.module('AngularGoogleMap', ['ngResource','google-maps']);
 
 app.factory('MarkerCreatorService', function () {
 
@@ -7,7 +7,7 @@ app.factory('MarkerCreatorService', function () {
     function create(latitude, longitude) {
         var marker = {
             options: {
-                animation: 1,
+                animation: 0,
                 labelAnchor: "28 -5",
                 labelClass: 'markerlabel'    
             },
@@ -51,19 +51,14 @@ app.factory('MarkerCreatorService', function () {
 
 });
 
-app.controller('MapCtrl', ['MarkerCreatorService', '$scope', function (MarkerCreatorService, $scope) {
-
-        MarkerCreatorService.createByCoords(43.3415225, -8.4477031, function (marker) {
-            marker.options.labelContent = 'Autentia';
-            $scope.autentiaMarker = marker;
-        });
+app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', function (MarkerCreatorService, $scope, $resource) {
         
         $scope.address = '';
 
         $scope.map = {
             center: {
-                latitude: $scope.autentiaMarker.latitude,
-                longitude: $scope.autentiaMarker.longitude
+                latitude: 43.3415225,
+                longitude: -8.4477031
             },
             zoom: 12,
             markers: [],
@@ -73,13 +68,19 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', function (MarkerCre
             }
         };
 
-        $scope.map.markers.push($scope.autentiaMarker);
+        var Stands = $resource("http://localhost:8080/SpringMVCHibernate/stands");
+        $scope.stands = Stands.query(function(){
+            for (var i=0; i<$scope.stands.length; i++) {
+                MarkerCreatorService.createByCoords($scope.stands[i].location.coordinates[1], $scope.stands[i].location.coordinates[0], function (marker) { marker.options.labelContent = $scope.stands[i].name; $scope.marker = marker;});
+                $scope.map.markers.push($scope.marker);
+            }
+        });
         
         $scope.addAddress = function() {
             var address = $scope.address;
             if (address !== '') {
                 MarkerCreatorService.createByAddress(address, function(marker) {
-                	marker.options.labelContent = 'Taxi';
+                	marker.options.labelContent = 'Client';
                     $scope.map.markers.push(marker);
                     refresh(marker);
                 });
@@ -93,4 +94,5 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', function (MarkerCre
 
     }]);
 
+        
 
