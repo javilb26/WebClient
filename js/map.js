@@ -73,27 +73,39 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             for (var i=0; i<arrayStand.length; i++) {
                 MarkerCreatorService.createByCoords(arrayStand[i].location.coordinates[1], arrayStand[i].location.coordinates[0], function (marker) {
                     var standId = arrayStand[i].standId;
-                    var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/stand/"+standId);
+                    var TaxiStand = $resource("http://localhost:8080/SpringMVCHibernate/stand/"+standId);
                     var stringTaxiIds = '';
-                    var arrayTaxi = $scope.taxis = Taxis.query(function(){
+                    var arrayTaxi = $scope.taxis = TaxiStand.query(function(){
                         for (var j=0; j<arrayTaxi.length; j++) {
                             stringTaxiIds = stringTaxiIds + ' ' + arrayTaxi[j].taxiId;
                         }
                         marker.options.labelContent = stringTaxiIds;
                     });
-                    marker.options.title = arrayStand[i].name;
-                    marker.options.icon = 'icons/TaxiStand.jpg';
+                    //marker.options.title = stringTaxiIds;
+                    marker.options.icon = 'icons/Taxip.png';
                     $scope.marker = marker;
                 });
                 $scope.map.markers.push($scope.marker);
             }
         });
-        
+
+        var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxi/operating");
+        var arrayTaxi = $scope.taxis = Taxis.query(function(){
+            for (var i=0; i<arrayTaxi.length; i++) {
+                MarkerCreatorService.createByCoords(arrayTaxi[i].position.coordinates[1], arrayTaxi[i].position.coordinates[0], function (marker) {
+                    marker.options.title = 'Id: ' + arrayTaxi[i].taxiId + ', State: ' + arrayTaxi[i].actualState;
+                    marker.options.icon = 'icons/Taxi.png';
+                    $scope.marker = marker;
+                });
+                $scope.map.markers.push($scope.marker);
+            }
+        });
+
         $scope.addAddress = function() {
             var address = $scope.address;
             if (address !== '') {
                 MarkerCreatorService.createByAddress(address, function(marker) {
-                	marker.options.labelContent = 'Client';
+                	//marker.options.labelContent = 'Client';
                     $scope.map.markers.push(marker);
                     refresh(marker);
                 });
