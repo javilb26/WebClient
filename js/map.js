@@ -9,7 +9,7 @@ app.factory('MarkerCreatorService', function () {
             options: {
                 animation: 0,
                 labelAnchor: "28 -5",
-                labelClass: 'markerlabel'    
+                labelClass: 'markerlabel'  
             },
             latitude: latitude,
             longitude: longitude,
@@ -69,9 +69,22 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
         };
 
         var Stands = $resource("http://localhost:8080/SpringMVCHibernate/stands");
-        $scope.stands = Stands.query(function(){
-            for (var i=0; i<$scope.stands.length; i++) {
-                MarkerCreatorService.createByCoords($scope.stands[i].location.coordinates[1], $scope.stands[i].location.coordinates[0], function (marker) { marker.options.labelContent = $scope.stands[i].name; $scope.marker = marker;});
+        var arrayStand = $scope.stands = Stands.query(function(){
+            for (var i=0; i<arrayStand.length; i++) {
+                MarkerCreatorService.createByCoords(arrayStand[i].location.coordinates[1], arrayStand[i].location.coordinates[0], function (marker) {
+                    var standId = arrayStand[i].standId;
+                    var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/stand/"+standId);
+                    var stringTaxiIds = '';
+                    var arrayTaxi = $scope.taxis = Taxis.query(function(){
+                        for (var j=0; j<arrayTaxi.length; j++) {
+                            stringTaxiIds = stringTaxiIds + ' ' + arrayTaxi[j].taxiId;
+                        }
+                        marker.options.labelContent = stringTaxiIds;
+                    });
+                    marker.options.title = arrayStand[i].name;
+                    marker.options.icon = 'icons/TaxiStand.jpg';
+                    $scope.marker = marker;
+                });
                 $scope.map.markers.push($scope.marker);
             }
         });
