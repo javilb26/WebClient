@@ -101,6 +101,18 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
+        var Clients = $resource("http://localhost:8080/SpringMVCHibernate/client/waiting");
+        var arrayClient = $scope.clients = Clients.query(function(){
+            for (var i=0; i<arrayClient.length; i++) {
+                MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
+                    marker.options.title = 'Id: ' + arrayClient[i].clientId + ', State: ' + arrayClient[i].clientState + ', Entry: ' + arrayClient[i].entry + ', Origin: ' + arrayClient[i].originAddress + ', ' + arrayClient[i].originCity + ', ' + arrayClient[i].originRegion + ', ' + arrayClient[i].originContry;
+                    marker.options.icon = 'icons/Client.png';
+                    $scope.marker = marker;
+                });
+                $scope.map.markers.push($scope.marker);
+            }
+        });
+
         $scope.addAddress = function() {
             var address = $scope.address;
             if (address !== '') {
