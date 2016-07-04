@@ -73,7 +73,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             for (var i=0; i<arrayStand.length; i++) {
                 MarkerCreatorService.createByCoords(arrayStand[i].location.coordinates[1], arrayStand[i].location.coordinates[0], function (marker) {
                     var standId = arrayStand[i].standId;
-                    var TaxiStand = $resource("http://localhost:8080/SpringMVCHibernate/stand/"+standId);
+                    var TaxiStand = $resource("http://localhost:8080/SpringMVCHibernate/stands/"+standId);
                     var stringTaxiIds = '';
                     var arrayTaxi = $scope.taxis = TaxiStand.query(function(){
                         for (var j=0; j<arrayTaxi.length; j++) {
@@ -89,7 +89,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
-        var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxi/operating");
+        var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxis/operating");
         var arrayTaxi = $scope.taxis = Taxis.query(function(){
             for (var i=0; i<arrayTaxi.length; i++) {
                 MarkerCreatorService.createByCoords(arrayTaxi[i].position.coordinates[1], arrayTaxi[i].position.coordinates[0], function (marker) {
@@ -101,7 +101,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
-        var Clients = $resource("http://localhost:8080/SpringMVCHibernate/client/waiting");
+        var Clients = $resource("http://localhost:8080/SpringMVCHibernate/clients/waiting");
         var arrayClient = $scope.clients = Clients.query(function(){
             for (var i=0; i<arrayClient.length; i++) {
                 MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
@@ -113,10 +113,10 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
-        $scope.addAddress = function() {
-            var address = $scope.address;
-            if (address !== '') {
-                MarkerCreatorService.createByAddress(address, function(marker) {
+        $scope.addClient = function() {
+            var client = $scope.client;
+            if (client !== '') {
+                MarkerCreatorService.createByAddress(client, function(marker) {
                 	//marker.options.labelContent = 'Client';
                     $scope.map.markers.push(marker);
                     refresh(marker);
