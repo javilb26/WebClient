@@ -9,7 +9,8 @@ app.factory('MarkerCreatorService', function () {
             options: {
                 animation: 0,
                 labelAnchor: "28 -5",
-                labelClass: 'markerlabel'  
+                //labelClass: 'markerlabel'
+                icon: 'icons/cliente.jpg'  
             },
             latitude: latitude,
             longitude: longitude,
@@ -82,7 +83,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
                         marker.options.labelContent = stringTaxiIds;
                     });
                     //marker.options.title = stringTaxiIds;
-                    marker.options.icon = 'icons/Taxip.png';
+                    marker.options.icon = 'icons/parada.jpg';
                     $scope.marker = marker;
                 });
                 $scope.map.markers.push($scope.marker);
@@ -94,7 +95,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             for (var i=0; i<arrayTaxi.length; i++) {
                 MarkerCreatorService.createByCoords(arrayTaxi[i].position.coordinates[1], arrayTaxi[i].position.coordinates[0], function (marker) {
                     marker.options.title = 'Id: ' + arrayTaxi[i].taxiId + ', State: ' + arrayTaxi[i].actualState;
-                    marker.options.icon = 'icons/Taxi.png';
+                    marker.options.icon = 'icons/taxioperando.jpg';
                     $scope.marker = marker;
                 });
                 $scope.map.markers.push($scope.marker);
@@ -106,7 +107,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             for (var i=0; i<arrayClient.length; i++) {
                 MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
                     marker.options.title = 'Id: ' + arrayClient[i].clientId + ', State: ' + arrayClient[i].clientState + ', Entry: ' + arrayClient[i].entry + ', Origin: ' + arrayClient[i].originAddress + ', ' + arrayClient[i].originCity + ', ' + arrayClient[i].originRegion + ', ' + arrayClient[i].originContry;
-                    marker.options.icon = 'icons/Client.png';
+                    marker.options.icon = 'icons/cliente.jpg';
                     $scope.marker = marker;
                 });
                 $scope.map.markers.push($scope.marker);
