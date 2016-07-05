@@ -102,7 +102,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
-        var Clients = $resource("http://localhost:8080/SpringMVCHibernate/clients/waiting");
+        var Clients = $resource("http://localhost:8080/SpringMVCHibernate/clients");
         var arrayClient = $scope.clients = Clients.query(function(){
             for (var i=0; i<arrayClient.length; i++) {
                 MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
@@ -118,6 +118,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             var client = $scope.client;
             if (client !== '') {
                 MarkerCreatorService.createByAddress(client, function(marker) {
+                    Clients.save([marker.latitude,marker.longitude]);
                 	//marker.options.labelContent = 'Client';
                     $scope.map.markers.push(marker);
                     refresh(marker);
