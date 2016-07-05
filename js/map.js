@@ -106,7 +106,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
         var arrayClient = $scope.clients = Clients.query(function(){
             for (var i=0; i<arrayClient.length; i++) {
                 MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
-                    marker.options.title = 'Id: ' + arrayClient[i].clientId + ', State: ' + arrayClient[i].clientState + ', Entry: ' + arrayClient[i].entry + ', Origin: ' + arrayClient[i].originAddress + ', ' + arrayClient[i].originCity + ', ' + arrayClient[i].originRegion + ', ' + arrayClient[i].originContry;
+                    marker.options.title = 'Id: ' + arrayClient[i].clientId + ', State: ' + arrayClient[i].clientState + ', Entry: ' + arrayClient[i].entry + ', Origin: ' + arrayClient[i].originAddress.name + ', ' + arrayClient[i].originCity.name + ', ' + arrayClient[i].originRegion.name + ', ' + arrayClient[i].originCountry.name;
                     marker.options.icon = 'icons/cliente.jpg';
                     $scope.marker = marker;
                 });
@@ -119,6 +119,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             if (client !== '') {
                 MarkerCreatorService.createByAddress(client, function(marker) {
                     Clients.save([marker.latitude,marker.longitude]);
+                    //Hacer comprobacion -> si no guarda en bd no pongas marcador (hay formas meter el marcador como resultado de la peticion rest)
                 	//marker.options.labelContent = 'Client';
                     $scope.map.markers.push(marker);
                     refresh(marker);
