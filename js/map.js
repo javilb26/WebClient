@@ -90,6 +90,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
+        //while (true) {
         var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxis/operating");
         var arrayTaxi = $scope.taxis = Taxis.query(function(){
             for (var i=0; i<arrayTaxi.length; i++) {
@@ -113,6 +114,31 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
                 $scope.map.markers.push($scope.marker);
             }
         });
+        //setTimeout(function(){}, 3000);
+        //}
+
+        var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/SpringMVCHibernate/taxiclient");
+        var taxiClient = TaxiIdWithTokenAndClient.get(function(){
+     		var data = {
+  				"to" : taxiClient.token,
+  				"data" : {
+					"clientId": taxiClient.clientId,
+					"country": taxiClient.country,
+					"region": taxiClient.region,
+					"city": taxiClient.city,
+					"address": taxiClient.address
+   				}
+			}
+			var PostFirebase = $resource("https://fcm.googleapis.com/fcm/send", data, {
+				post: {
+					method: 'POST',
+					headers: {'Authorization': 'key=AIzaSyDuJHUIiXZGWgul-eH_28qugSELqErrsOc'}
+				}
+			});
+			PostFirebase.post();
+        });
+
+        //Obtener TaxiCLient y hacer post a gcm -> mandar a android la info e implementar los botones de alerta
 
         $scope.addClient = function() {
             var client = $scope.client;
