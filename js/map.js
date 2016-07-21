@@ -94,12 +94,14 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
         var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxis/operating");
         var arrayTaxi = $scope.taxis = Taxis.query(function(){
             for (var i=0; i<arrayTaxi.length; i++) {
-                MarkerCreatorService.createByCoords(arrayTaxi[i].position.coordinates[1], arrayTaxi[i].position.coordinates[0], function (marker) {
-                    marker.options.title = 'Id: ' + arrayTaxi[i].taxiId + ', State: ' + arrayTaxi[i].actualState;
-                    marker.options.icon = 'icons/taxioperando.jpg';
-                    $scope.marker = marker;
-                });
-                $scope.map.markers.push($scope.marker);
+            	if (arrayTaxi[i].actualState !== 'INSTAND') {
+            		MarkerCreatorService.createByCoords(arrayTaxi[i].position.coordinates[1], arrayTaxi[i].position.coordinates[0], function (marker) {
+                    	marker.options.title = 'Id: ' + arrayTaxi[i].taxiId + ', State: ' + arrayTaxi[i].actualState;
+                    	marker.options.icon = 'icons/taxioperando.jpg';
+                    	$scope.marker = marker;
+                	});
+                	$scope.map.markers.push($scope.marker);
+            	}
             }
         });
 
