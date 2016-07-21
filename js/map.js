@@ -10,7 +10,7 @@ app.factory('MarkerCreatorService', function () {
                 animation: 0,
                 labelAnchor: "28 -5",
                 //labelClass: 'markerlabel'
-                icon: 'icons/cliente.jpg'  
+                icon: 'icons/clientwaiting.png'  
             },
             latitude: latitude,
             longitude: longitude,
@@ -83,7 +83,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
                         marker.options.labelContent = stringTaxiIds;
                     });
                     //marker.options.title = stringTaxiIds;
-                    marker.options.icon = 'icons/parada.jpg';
+                    marker.options.icon = 'icons/stand.png';
                     $scope.marker = marker;
                 });
                 $scope.map.markers.push($scope.marker);
@@ -97,7 +97,12 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             	if (arrayTaxi[i].actualState !== 'INSTAND') {
             		MarkerCreatorService.createByCoords(arrayTaxi[i].position.coordinates[1], arrayTaxi[i].position.coordinates[0], function (marker) {
                     	marker.options.title = 'Id: ' + arrayTaxi[i].taxiId + ', State: ' + arrayTaxi[i].actualState;
-                    	marker.options.icon = 'icons/taxioperando.jpg';
+                    	if (arrayTaxi[i].actualState === 'AVAILABLE') {
+                    		marker.options.icon = 'icons/taxiavailable.png';
+                    	}
+                    	if (arrayTaxi[i].actualState === 'BUSY') {
+                    		marker.options.icon = 'icons/taxibusy.png';
+                    	}
                     	$scope.marker = marker;
                 	});
                 	$scope.map.markers.push($scope.marker);
@@ -110,7 +115,12 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             for (var i=0; i<arrayClient.length; i++) {
                 MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
                     marker.options.title = 'Id: ' + arrayClient[i].clientId + ', State: ' + arrayClient[i].clientState + ', Entry: ' + arrayClient[i].entry + ', Origin: ' + arrayClient[i].originAddress.name + ', ' + arrayClient[i].originCity.name + ', ' + arrayClient[i].originRegion.name + ', ' + arrayClient[i].originCountry.name;
-                    marker.options.icon = 'icons/cliente.jpg';
+                    if (arrayClient[i].clientState === 'WAITING') {
+                    	marker.options.icon = 'icons/clientwaiting.png';
+                    }
+                    if (arrayClient[i].clientState === 'ASSIGNED') {
+                    	marker.options.icon = 'icons/clientassigned.png';
+                    }
                     $scope.marker = marker;
                 });
                 $scope.map.markers.push($scope.marker);
