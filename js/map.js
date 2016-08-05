@@ -52,7 +52,7 @@ app.factory('MarkerCreatorService', function () {
 
 });
 
-app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', function (MarkerCreatorService, $scope, $resource) {
+app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$interval', function (MarkerCreatorService, $scope, $resource, $interval) {
         
         $scope.address = '';
 
@@ -69,7 +69,15 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         };
 
-        var Stands = $resource("http://localhost:8080/SpringMVCHibernate/stands");
+        
+
+        $interval(refreshMap, 3000);
+
+		function refreshMap() {
+
+		$scope.map.markers = [];
+
+		var Stands = $resource("http://localhost:8080/SpringMVCHibernate/stands");
         var arrayStand = $scope.stands = Stands.query(function(){
             for (var i=0; i<arrayStand.length; i++) {
                 MarkerCreatorService.createByCoords(arrayStand[i].location.coordinates[1], arrayStand[i].location.coordinates[0], function (marker) {
@@ -90,7 +98,6 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
             }
         });
 
-        //while (true) {
         var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxis/operating");
         var arrayTaxi = $scope.taxis = Taxis.query(function(){
             for (var i=0; i<arrayTaxi.length; i++) {
@@ -126,8 +133,6 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
                 $scope.map.markers.push($scope.marker);
             }
         });
-        //setTimeout(function(){}, 3000);
-        //}
 
         var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/SpringMVCHibernate/taxiclient");
         var taxiClient = TaxiIdWithTokenAndClient.get(function(){
@@ -150,7 +155,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', functi
 			PostFirebase.post();
         });
 
-        //Obtener TaxiCLient y hacer post a gcm -> mandar a android la info e implementar los botones de alerta
+    	}
 
         $scope.addClient = function() {
             var client = $scope.client;
