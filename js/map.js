@@ -55,6 +55,7 @@ app.factory('MarkerCreatorService', function () {
 app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$interval', function (MarkerCreatorService, $scope, $resource, $interval) {
         
         $scope.address = '';
+        var actualTaxi = 0;
 
         $scope.map = {
             center: {
@@ -136,6 +137,9 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
 
         var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/SpringMVCHibernate/taxiclient");
         var taxiClient = TaxiIdWithTokenAndClient.get(function(){
+        	//alert("actualTaxi: " + actualTaxi + " --- TaxiClient: " + taxiClient.taxiId);
+     	if(actualTaxi != taxiClient.taxiId){
+     		actualTaxi = taxiClient.taxiId;
      		var data = {
   				"to" : taxiClient.token,
   				"data" : {
@@ -153,11 +157,11 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
 				}
 			});
 			PostFirebase.post();
+			
+        }
         });
 
-    	}
-
-        $scope.addClient = function() {
+    	$scope.addClient = function() {
             var client = $scope.client;
             if (client !== '') {
                 MarkerCreatorService.createByAddress(client, function(marker) {
@@ -174,6 +178,10 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
             $scope.map.control.refresh({latitude: marker.latitude,
                 longitude: marker.longitude});
         }
+
+    	}
+
+        
 
     }]);
 
