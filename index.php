@@ -32,7 +32,7 @@
                         <td>{{ taxi.client.clientId }}</td>
                         <td>{{ taxi.city.cityId }}</td>
                         <td>
-                            <button class="btn btn-default btn-xs btn-detail" ng-click="toggle('edit', taxi.taxiId)">Edit</button>
+                            <button class="btn btn-info btn-xs btn-detail" ng-click="toggle('edit', taxi.taxiId)">Edit</button>
                         </td>
                     </tr>
                 </tbody>

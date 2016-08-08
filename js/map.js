@@ -54,27 +54,25 @@ app.factory('MarkerCreatorService', function () {
 
 app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$interval', function (MarkerCreatorService, $scope, $resource, $interval) {
         
-        $scope.address = '';
-        var actualTaxi = 0;
+    $scope.address = '';
+    var actualTaxi = 0;
 
-        $scope.map = {
-            center: {
-                latitude: 43.3415225,
-                longitude: -8.4477031
-            },
-            zoom: 12,
-            markers: [],
-            control: {},
-            options: {
-                scrollwheel: true
-            }
-        };
+    $scope.map = {
+        center: {
+            latitude: 43.3415225,
+            longitude: -8.4477031
+        },
+        zoom: 12,
+        markers: [],
+        control: {},
+        options: {
+            scrollwheel: true
+        }
+    };
 
-        
+    $interval(refreshMap, 3000);
 
-        $interval(refreshMap, 3000);
-
-		function refreshMap() {
+	function refreshMap() {
 
 		$scope.map.markers = [];
 
@@ -137,28 +135,26 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
 
         var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/SpringMVCHibernate/taxiclient");
         var taxiClient = TaxiIdWithTokenAndClient.get(function(){
-        	//alert("actualTaxi: " + actualTaxi + " --- TaxiClient: " + taxiClient.taxiId);
-     	if(actualTaxi != taxiClient.taxiId){
-     		actualTaxi = taxiClient.taxiId;
-     		var data = {
-  				"to" : taxiClient.token,
-  				"data" : {
-					"clientId": taxiClient.clientId,
-					"country": taxiClient.country,
-					"region": taxiClient.region,
-					"city": taxiClient.city,
-					"address": taxiClient.address
-   				}
-			}
-			var PostFirebase = $resource("https://fcm.googleapis.com/fcm/send", data, {
-				post: {
-					method: 'POST',
-					headers: {'Authorization': 'key=AIzaSyDuJHUIiXZGWgul-eH_28qugSELqErrsOc'}
+	     	if(actualTaxi != taxiClient.taxiId){
+	     		actualTaxi = taxiClient.taxiId;
+	     		var data = {
+	  				"to" : taxiClient.token,
+	  				"data" : {
+						"clientId": taxiClient.clientId,
+						"country": taxiClient.country,
+						"region": taxiClient.region,
+						"city": taxiClient.city,
+						"address": taxiClient.address
+	   				}
 				}
-			});
-			PostFirebase.post();
-			
-        }
+				var PostFirebase = $resource("https://fcm.googleapis.com/fcm/send", data, {
+					post: {
+						method: 'POST',
+						headers: {'Authorization': 'key=AIzaSyDuJHUIiXZGWgul-eH_28qugSELqErrsOc'}
+					}
+				});
+				PostFirebase.post();
+	        }
         });
 
     	$scope.addClient = function() {
@@ -179,11 +175,11 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
                 longitude: marker.longitude});
         }
 
-    	}
+	}
 
-        
+    
 
-    }]);
+}]);
 
-        
+    
 
