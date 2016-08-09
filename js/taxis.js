@@ -1,5 +1,5 @@
 var app = angular.module('taxiRecords', [])
-        .constant('API_URL', 'http://localhost:8080/SpringMVCHibernate/');
+        .constant('API_URL', 'http://localhost:8080/TaxiCentral/');
 
 app.controller('taxisController', function($scope, $http, API_URL) {
     //retrieve taxis listing from API

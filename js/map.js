@@ -76,12 +76,12 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
 
 		$scope.map.markers = [];
 
-		var Stands = $resource("http://localhost:8080/SpringMVCHibernate/stands");
+		var Stands = $resource("http://localhost:8080/TaxiCentral/stands");
         var arrayStand = $scope.stands = Stands.query(function(){
             for (var i=0; i<arrayStand.length; i++) {
                 MarkerCreatorService.createByCoords(arrayStand[i].location.coordinates[1], arrayStand[i].location.coordinates[0], function (marker) {
                     var standId = arrayStand[i].standId;
-                    var TaxiStand = $resource("http://localhost:8080/SpringMVCHibernate/stands/"+standId);
+                    var TaxiStand = $resource("http://localhost:8080/TaxiCentral/stands/"+standId);
                     var stringTaxiIds = '';
                     var arrayTaxi = $scope.taxis = TaxiStand.query(function(){
                         for (var j=0; j<arrayTaxi.length; j++) {
@@ -97,7 +97,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
             }
         });
 
-        var Taxis = $resource("http://localhost:8080/SpringMVCHibernate/taxis/operating");
+        var Taxis = $resource("http://localhost:8080/TaxiCentral/taxis/operating");
         var arrayTaxi = $scope.taxis = Taxis.query(function(){
             for (var i=0; i<arrayTaxi.length; i++) {
             	if (arrayTaxi[i].actualState !== 'INSTAND') {
@@ -116,7 +116,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
             }
         });
 
-        var Clients = $resource("http://localhost:8080/SpringMVCHibernate/clients");
+        var Clients = $resource("http://localhost:8080/TaxiCentral/clients");
         var arrayClient = $scope.clients = Clients.query(function(){
             for (var i=0; i<arrayClient.length; i++) {
                 MarkerCreatorService.createByCoords(arrayClient[i].location.coordinates[1], arrayClient[i].location.coordinates[0], function (marker) {
@@ -133,7 +133,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
             }
         });
 
-        var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/SpringMVCHibernate/taxiclient");
+        var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/TaxiCentral/taxiclient");
         var taxiClient = TaxiIdWithTokenAndClient.get(function(){
 	     	if(actualTaxi != taxiClient.taxiId){
 	     		actualTaxi = taxiClient.taxiId;
