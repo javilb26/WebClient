@@ -21,7 +21,6 @@
         <script src="js/map.js?v=1.0"></script>
     </head>
     <body ng-controller="MapCtrl">
-        <!--<h1>ANGULARJS / GOOGLE MAPS EXAMPLE</h1>-->
         <div class="map_container" >
             <google-map center="map.center" zoom="map.zoom" draggable="true" options="map.options" control="map.control">
                 <markers models="map.markers" coords="'self'" options="'options'" isLabel='true'>
@@ -29,11 +28,10 @@
             </google-map>
         </div>  
         <div class="controls">
-            <!--<h3>Address search</h3>-->
             <p>
                 <input type="text" placeholder="i.e: Avda Angeles, A Coruña" ng-model="client" />
                 <button ng-click="addClient()">Add client</button>    
-                <a href="index.php" target="_blank">Admin</a>
+                <a href="admin.php" target="_blank">Admin</a>
             </p>
         </div>
 

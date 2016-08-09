@@ -162,7 +162,6 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
             if (client !== '') {
                 MarkerCreatorService.createByAddress(client, function(marker) {
                     Clients.save([marker.latitude,marker.longitude]);
-                    //Hacer comprobacion -> si no guarda en bd no pongas marcador (hay formas meter el marcador como resultado de la peticion rest)
                 	//marker.options.labelContent = 'Client';
                     $scope.map.markers.push(marker);
                     refresh(marker);
