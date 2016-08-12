@@ -70,7 +70,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
         }
     };
 
-    $interval(refreshMap, 3000);
+    $interval(refreshMap, 10000);
 
 	function refreshMap() {
 
