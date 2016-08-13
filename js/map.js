@@ -135,8 +135,12 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
 
         var TaxiIdWithTokenAndClient = $resource("http://localhost:8080/TaxiCentral/taxiclient");
         var taxiClient = TaxiIdWithTokenAndClient.get(function(){
-	     	if(actualTaxi != taxiClient.taxiId){
-	     		actualTaxi = taxiClient.taxiId;
+            //alert("taxiClient.taxiId: "+taxiClient.taxiId);
+            //alert("actualTaxi: "+actualTaxi);
+	     	//if(actualTaxi != taxiClient.taxiId){
+	     	//	actualTaxi = taxiClient.taxiId;
+            //if(actualTaxi == taxiClient.taxiId){
+            //Espera 10 segundos si tal
 	     		var data = {
 	  				"to" : taxiClient.token,
 	  				"data" : {
@@ -154,7 +158,7 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
 					}
 				});
 				PostFirebase.post();
-	        }
+	        //}
         });
 
     	$scope.addClient = function() {
