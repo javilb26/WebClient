@@ -85,7 +85,9 @@ app.controller('MapCtrl', ['MarkerCreatorService', '$scope', '$resource', '$inte
                     var stringTaxiIds = '';
                     var arrayTaxi = $scope.taxis = TaxiStand.query(function(){
                         for (var j=0; j<arrayTaxi.length; j++) {
-                            stringTaxiIds = stringTaxiIds + ' ' + arrayTaxi[j].taxiId;
+                            if (arrayTaxi[j].actualState !== 'AVAILABLE') {
+                                stringTaxiIds = stringTaxiIds + ' ' + arrayTaxi[j].taxiId;
+                            }
                         }
                         marker.options.labelContent = stringTaxiIds;
                     });
