@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en-US" ng-app="taxiRecords">
+<html lang="en-US" ng-app="TaxiCentral">
     <head>
         <title>TaxiCentral Admin</title>
 
         <!-- Load Bootstrap CSS -->
-        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="styles/bootstrap.min.css" rel="stylesheet">
     </head>
     <body>
         <!--<h2>Taxis Database</h2>-->
-        <div ng-controller="taxisController">
+        <div ng-controller="taxiscontroller">
 
             <!-- Table-to-load-the-data Part -->
             <table class="table">
@@ -107,7 +107,8 @@
         <script src="js/lib/bootstrap.min.js"></script>
         
         <!-- AngularJS Application Scripts -->
-        <script src="js/taxis.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/taxiscontroller.js"></script>
 
     </body>
 </html>
